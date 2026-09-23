@@ -86,7 +86,7 @@ function detectSimpleMode(text: string, proxyGroupName: string) {
 
   const hasGfw = withoutMac.includes(`domain(geosite:gfw) -> ${proxyGroupName}`)
   const hasCnDirect =
-    withoutMac.includes('dip(geoip:cn) -> direct') && withoutMac.includes('domain(geosite:cn) -> direct')
+    withoutMac.includes('dip(geoip:cn) -> must_direct') && withoutMac.includes('domain(geosite:cn) -> must_direct')
   const hasCnProxy =
     withoutMac.includes(`dip(geoip:cn) -> ${proxyGroupName}`) &&
     withoutMac.includes(`domain(geosite:cn) -> ${proxyGroupName}`)
@@ -95,13 +95,13 @@ function detectSimpleMode(text: string, proxyGroupName: string) {
   const fallbackTarget = fallbackLine?.split(':')[1]?.trim()
 
   let mode: RoutingSimpleMode | undefined
-  if (hasGfw && fallbackTarget === 'direct') {
+  if (hasGfw && fallbackTarget === 'must_direct') {
     mode = 'gfw'
   } else if (hasCnDirect && fallbackTarget === proxyGroupName) {
     mode = 'nonCn'
-  } else if (hasCnProxy && fallbackTarget === 'direct') {
+  } else if (hasCnProxy && fallbackTarget === 'must_direct') {
     mode = 'cnOnly'
-  } else if (hasCnDirect && fallbackTarget === 'direct' && !hasGfw && !hasCnProxy) {
+  } else if (hasCnDirect && fallbackTarget === 'must_direct' && !hasGfw && !hasCnProxy) {
     mode = 'macOnly'
   } else if (!hasGfw && !hasCnDirect && !hasCnProxy && fallbackTarget === proxyGroupName) {
     mode = 'global'
@@ -135,7 +135,7 @@ function buildRoutingTemplate(
   macList?: string[],
   macAction: MacAction = 'proxy',
 ) {
-  const header = `pname(NetworkManager, systemd-resolved, dnsmasq) -> must_direct\ndip(geoip:private) -> direct`
+  const header = `pname(NetworkManager, systemd-resolved, netclient) -> must_direct\ndport(53) && pname(dnsmasq) -> direct\ndip(geoip:private) -> must_direct`
   const macRule =
     macList && macList.length > 0
       ? `\nmac(${macList.map((m) => `'${m}'`).join(', ')}) -> ${macAction === 'direct' ? 'direct' : proxyGroupName}`
@@ -145,25 +145,26 @@ function buildRoutingTemplate(
     case 'gfw':
       return `${header}${macRule}
 domain(geosite:gfw) -> ${proxyGroupName}
-fallback: direct`
+dip(8.8.8.8) -> ${proxyGroupName}
+fallback: must_direct`
     case 'nonCn':
       return `${header}${macRule}
-dip(geoip:cn) -> direct
-domain(geosite:cn) -> direct
+dip(geoip:cn) -> must_direct
+domain(geosite:cn) -> must_direct
 fallback: ${proxyGroupName}`
     case 'cnOnly':
       return `${header}${macRule}
 dip(geoip:cn) -> ${proxyGroupName}
 domain(geosite:cn) -> ${proxyGroupName}
-fallback: direct`
+fallback: must_direct`
     case 'global':
       return `${header}${macRule}
 fallback: ${proxyGroupName}`
     case 'macOnly':
       return `${header}${macRule}
-dip(geoip:cn) -> direct
-domain(geosite:cn) -> direct
-fallback: direct`
+dip(geoip:cn) -> must_direct
+domain(geosite:cn) -> must_direct
+fallback: must_direct`
   }
 }
 
@@ -440,3 +441,4 @@ export function RoutingFormModal({
     </Dialog>
   )
 }
+
