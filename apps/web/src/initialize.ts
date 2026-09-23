@@ -21,14 +21,21 @@ export function useInitialize() {
   const getInterfaces = getInterfacesRequest(apiClient)
 
   return useCallback(async () => {
-    // In mock mode, use mock default IDs directly
     if (isMockMode()) {
       modeAtom.set(MODE.rule)
       defaultResourcesAtom.set(MOCK_DEFAULT_IDS)
       return
     }
 
-    const lanInterfaces = (await getInterfaces()).general.interfaces.filter(hasDefaultRoutes).map(({ name }) => name)
+    const allIfaces = (await getInterfaces()).general.interfaces
+    const names = allIfaces.map(({ name }) => name)
+
+    const lanInterfaces = names.includes('br-lan')
+      ? ['br-lan']
+      : allIfaces
+          .filter((iface) => !hasDefaultRoutes(iface))
+          .map(({ name }) => name)
+          .filter((name) => name !== 'lo' && !name.startsWith('docker') && !name.startsWith('veth'))
 
     const { defaultConfigID, defaultDNSID, defaultGroupID, defaultRoutingID, mode } =
       await ensureDefaultResourcesMutation.mutateAsync({
