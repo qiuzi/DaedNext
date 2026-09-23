@@ -48,7 +48,7 @@ export const DEFAULT_UTLS_IMITATE = UTLSImitate.chrome_auto
 export const DEFAULT_MPTCP = false
 export const DEFAULT_ENABLE_LOCAL_TCP_FAST_REDIRECT = false
 export const DEFAULT_PPROF_PORT = 0
-export const DEFAULT_BANDWIDTH_MAX_TX = '200 mbps'
+export const DEFAULT_BANDWIDTH_MAX_TX = '2000 mbps'
 export const DEFAULT_BANDWIDTH_MAX_RX = '1 gbps'
 export const DEFAULT_FALLBACK_RESOLVER = '8.8.8.8:53'
 
@@ -86,20 +86,24 @@ export function DEFAULT_CONFIG_WITH_LAN_INTERFACEs(interfaces: string[] = []): G
   }
 }
 
-export const DEFAULT_GROUP_POLICY = Policy.Random
+export const DEFAULT_GROUP_POLICY = Policy.MinMovingAvg
 
 export const DEFAULT_ROUTING = `
-pname(NetworkManager, systemd-resolved, dnsmasq) -> must_direct
-dip(geoip:private) -> direct
-dip(geoip:cn) -> direct
-domain(geosite:cn) -> direct
-fallback: ${DEFAULT_GROUP_NAME}
+pname(NetworkManager, systemd-resolved, netclient) -> must_direct
+dport(53) && pname(dnsmasq) -> direct
+dip(geoip:private) -> must_direct
+dip(geoip:cn) -> must_direct
+domain(geosite:cn) -> must_direct
+domain(geosite:gfw) -> ${DEFAULT_GROUP_NAME}
+dip(8.8.8.8) -> ${DEFAULT_GROUP_NAME}
+fallback: must_direct
 `.trim()
 
 export const DEFAULT_DNS = `
 upstream {
   alidns: 'udp://223.5.5.5:53'
-  googledns: 'tcp+udp://8.8.8.8:53'
+  googledns: 'udp://8.8.8.8:53'
+  aliquic: 'quic://223.6.6.6'
 }
 routing {
   request {
