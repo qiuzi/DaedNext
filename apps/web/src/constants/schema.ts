@@ -476,7 +476,7 @@ export const hysteria2Schema = z
     obfs: z.enum(['', 'salamander']),
     obfsPassword: z.string(),
     allowInsecure: z.boolean(),
-    pinSHA256: z.string().nonempty(),
+    pinSHA256: z.string(),
     maxTx: z.string(),
     maxRx: z.string(),
   })
