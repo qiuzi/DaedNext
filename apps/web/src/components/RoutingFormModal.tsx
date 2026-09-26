@@ -144,6 +144,7 @@ function buildRoutingTemplate(
   switch (mode) {
     case 'gfw':
       return `${header}${macRule}
+domain(suffix: sb) -> ${proxyGroupName}
 domain(geosite:gfw) -> ${proxyGroupName}
 dip(8.8.8.8) -> ${proxyGroupName}
 fallback: must_direct`
