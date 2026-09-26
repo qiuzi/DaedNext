@@ -4,6 +4,7 @@ import { parseHysteria2Url } from '@daeuniverse/dae-node-parser'
 import { createPortal } from 'react-dom'
 
 import { FormActions } from '~/components/FormActions'
+import { Checkbox } from '~/components/ui/checkbox'
 import { Input } from '~/components/ui/input'
 import { NumberInput } from '~/components/ui/number-input'
 import { Select } from '~/components/ui/select'
@@ -73,9 +74,15 @@ export function Hysteria2Form({ onLinkGeneration, initialValues, actionsPortal }
         />
       )}
       <Input label="SNI" value={formValues.sni} onChange={(e) => setValue('sni', e.target.value)} />
+
+      <Checkbox
+        label={t('allowInsecure')}
+        checked={formValues.allowInsecure}
+        onCheckedChange={(checked) => setValue('allowInsecure', !!checked)}
+      />
+      
       <Input
         label="Pin SHA256"
-        withAsterisk
         value={formValues.pinSHA256}
         onChange={(e) => setValue('pinSHA256', e.target.value)}
       />
