@@ -125,6 +125,7 @@ export function generateHysteria2Link(data: Hysteria2GeneratorValues): string {
       pinSHA256: data.pinSHA256,
       maxTx: data.maxTx,
       maxRx: data.maxRx,
+      ...(data.allowInsecure ? { insecure: 1 } : {}),
     },
     hash: data.name,
   })
