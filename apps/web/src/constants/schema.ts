@@ -481,13 +481,13 @@ export const hysteria2Schema = z
     maxRx: z.string(),
   })
   .superRefine((data, ctx) => {
-    if (data.allowInsecure) {
+/*    if (data.allowInsecure) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['allowInsecure'],
         message: 'Resident Hysteria2 does not admit insecure mode',
       })
-    }
+    } */
     if ((data.maxTx === '') !== (data.maxRx === '')) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
