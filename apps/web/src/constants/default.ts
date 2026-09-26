@@ -33,7 +33,7 @@ export const DEFAULT_LOG_LEVEL = LogLevel.error
 export const DEFAULT_TPROXY_PORT = 12345
 export const DEFAULT_TPROXY_PORT_PROTECT = true
 export const DEFAULT_SO_MARK_FROM_DAE = 0
-export const DEFAULT_ALLOW_INSECURE = false
+export const DEFAULT_ALLOW_INSECURE = true
 export const DEFAULT_CHECK_INTERVAL_SECONDS = 30
 export const DEFAULT_CHECK_TOLERANCE_MS = 0
 export const DEFAULT_SNIFFING_TIMEOUT_MS = 100
@@ -45,8 +45,8 @@ export const DEFAULT_DISABLE_WAITING_NETWORK = false
 export const DEFAULT_AUTO_CONFIG_KERNEL_PARAMETER = true
 export const DEFAULT_TLS_IMPLEMENTATION = TLSImplementation.tls
 export const DEFAULT_UTLS_IMITATE = UTLSImitate.chrome_auto
-export const DEFAULT_MPTCP = false
-export const DEFAULT_ENABLE_LOCAL_TCP_FAST_REDIRECT = false
+export const DEFAULT_MPTCP = true
+export const DEFAULT_ENABLE_LOCAL_TCP_FAST_REDIRECT = true
 export const DEFAULT_PPROF_PORT = 0
 export const DEFAULT_BANDWIDTH_MAX_TX = '2000 mbps'
 export const DEFAULT_BANDWIDTH_MAX_RX = '1 gbps'
@@ -92,6 +92,7 @@ export const DEFAULT_ROUTING = `
 pname(NetworkManager, systemd-resolved, netclient) -> must_direct
 dport(53) && pname(dnsmasq) -> direct
 dip(geoip:private) -> must_direct
+domain(suffix: sb) -> ${DEFAULT_GROUP_NAME}
 dip(geoip:cn) -> must_direct
 domain(geosite:cn) -> must_direct
 domain(geosite:gfw) -> ${DEFAULT_GROUP_NAME}
@@ -107,8 +108,8 @@ upstream {
 }
 routing {
   request {
-    qname(geosite:cn) -> alidns
-    fallback: googledns
+    qname(geosite:gfw) -> googledns
+    fallback: alidns
   }
 }
 `.trim()
@@ -246,7 +247,7 @@ export const DEFAULT_HYSTERIA2_FORM_VALUES: z.infer<typeof hysteria2Schema> = {
   ports: '',
   obfs: '',
   obfsPassword: '',
-  allowInsecure: false,
+  allowInsecure: true,
   pinSHA256: '',
   maxTx: '',
   maxRx: '',
