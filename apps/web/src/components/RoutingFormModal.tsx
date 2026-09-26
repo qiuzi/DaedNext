@@ -144,6 +144,8 @@ function buildRoutingTemplate(
   switch (mode) {
     case 'gfw':
       return `${header}${macRule}
+domain(geosite:netflix) -> ${proxyGroupName}
+domain(geosite:category-ai-chat-!cn) -> ${proxyGroupName}
 domain(suffix: sb) -> ${proxyGroupName}
 domain(geosite:gfw) -> ${proxyGroupName}
 dip(8.8.8.8) -> ${proxyGroupName}
