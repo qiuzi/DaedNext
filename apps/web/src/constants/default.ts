@@ -93,6 +93,8 @@ pname(NetworkManager, systemd-resolved, netclient) -> must_direct
 dport(53) && pname(dnsmasq) -> direct
 dip(geoip:private) -> must_direct
 domain(suffix: sb) -> ${DEFAULT_GROUP_NAME}
+domain(geosite:category-ai-chat-!cn) -> ${DEFAULT_GROUP_NAME}
+domain(geosite:netflix) -> ${DEFAULT_GROUP_NAME}
 dip(geoip:cn) -> must_direct
 domain(geosite:cn) -> must_direct
 domain(geosite:gfw) -> ${DEFAULT_GROUP_NAME}
