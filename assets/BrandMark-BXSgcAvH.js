@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Bg_NI1en.js";import{i as t}from"./useTranslation-BKZhFN16.js";var n=e();function r({className:e}){return(0,n.jsx)(`img`,{src:`./logo.webp`,alt:`DaedNext`,width:40,height:40,className:t(`h-10 w-10 shrink-0 rounded-xl object-cover`,e)})}export{r as t};
