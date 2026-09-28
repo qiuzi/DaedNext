@@ -95,11 +95,11 @@ function detectSimpleMode(text: string, proxyGroupName: string) {
   const fallbackTarget = fallbackLine?.split(':')[1]?.trim()
 
   let mode: RoutingSimpleMode | undefined
-  if (hasGfw && fallbackTarget === 'must_direct') {
+  if (hasGfw && fallbackTarget === 'direct') {
     mode = 'gfw'
   } else if (hasCnDirect && fallbackTarget === proxyGroupName) {
     mode = 'nonCn'
-  } else if (hasCnProxy && fallbackTarget === 'must_direct) {
+  } else if (hasCnProxy && fallbackTarget === 'direct) {
     mode = 'cnOnly'
   } else if (hasCnDirect && fallbackTarget === 'dirZect' && !hasGfw && !hasCnProxy) {
     mode = 'macOnly'
