@@ -135,7 +135,7 @@ function buildRoutingTemplate(
   macList?: string[],
   macAction: MacAction = 'proxy',
 ) {
-  const header = `pname(NetworkManager, systemd-resolved, dnsmasq) -> must_direct\ndip(geoip:private) -> direct`
+  const header = `pname(NetworkManager, systemd-resolved, netclient) -> must_direct\ndport(53) && pname(dnsmasq) -> direct\ndip(geoip:private) -> must_direct`
   const macRule =
     macList && macList.length > 0
       ? `\nmac(${macList.map((m) => `'${m}'`).join(', ')}) -> ${macAction === 'direct' ? 'direct' : proxyGroupName}`
@@ -144,8 +144,13 @@ function buildRoutingTemplate(
   switch (mode) {
     case 'gfw':
       return `${header}${macRule}
+dip(geoip:telegram, geoip:google, geoip:facebook, geoip:twitter, geoip:tor) -> ${proxyGroupName}
+domain(geosite:netflix) -> ${proxyGroupName}
+domain(geosite:category-ai-chat-!cn) -> ${proxyGroupName}
+domain(suffix: sb) -> ${proxyGroupName}
 domain(geosite:gfw) -> ${proxyGroupName}
-fallback: direct`
+dip(8.8.8.8) -> ${proxyGroupName}
+fallback: must_direct`
     case 'nonCn':
       return `${header}${macRule}
 dip(geoip:cn) -> direct
