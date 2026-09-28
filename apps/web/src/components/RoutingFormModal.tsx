@@ -86,7 +86,7 @@ function detectSimpleMode(text: string, proxyGroupName: string) {
 
   const hasGfw = withoutMac.includes(`domain(geosite:gfw) -> ${proxyGroupName}`)
   const hasCnDirect =
-    withoutMac.includes('dip(geoip:cn) -> must_direct') && withoutMac.includes('domain(geosite:cn) -> must_direct')
+    withoutMac.includes('dip(geoip:cn) -> direct') && withoutMac.includes('domain(geosite:cn) -> direct')
   const hasCnProxy =
     withoutMac.includes(`dip(geoip:cn) -> ${proxyGroupName}`) &&
     withoutMac.includes(`domain(geosite:cn) -> ${proxyGroupName}`)
@@ -99,9 +99,9 @@ function detectSimpleMode(text: string, proxyGroupName: string) {
     mode = 'gfw'
   } else if (hasCnDirect && fallbackTarget === proxyGroupName) {
     mode = 'nonCn'
-  } else if (hasCnProxy && fallbackTarget === 'direct) {
+  } else if (hasCnProxy && fallbackTarget === 'direct') {
     mode = 'cnOnly'
-  } else if (hasCnDirect && fallbackTarget === 'dirZect' && !hasGfw && !hasCnProxy) {
+  } else if (hasCnDirect && fallbackTarget === 'direct' && !hasGfw && !hasCnProxy) {
     mode = 'macOnly'
   } else if (!hasGfw && !hasCnDirect && !hasCnProxy && fallbackTarget === proxyGroupName) {
     mode = 'global'
@@ -153,22 +153,22 @@ dip(8.8.8.8) -> ${proxyGroupName}
 fallback: must_direct`
     case 'nonCn':
       return `${header}${macRule}
-dip(geoip:cn) -> must_direct
-domain(geosite:cn) -> must_direct
+dip(geoip:cn) -> direct
+domain(geosite:cn) -> direct
 fallback: ${proxyGroupName}`
     case 'cnOnly':
       return `${header}${macRule}
 dip(geoip:cn) -> ${proxyGroupName}
 domain(geosite:cn) -> ${proxyGroupName}
-fallback: must_direct`
+fallback: direct`
     case 'global':
       return `${header}${macRule}
 fallback: ${proxyGroupName}`
     case 'macOnly':
       return `${header}${macRule}
-dip(geoip:cn) -> must_direct
-domain(geosite:cn) -> must_direct
-fallback: must_direct`
+dip(geoip:cn) -> direct
+domain(geosite:cn) -> direct
+fallback: direct`
   }
 }
 
