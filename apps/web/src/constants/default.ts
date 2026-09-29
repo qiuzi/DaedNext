@@ -112,6 +112,7 @@ upstream {
 }
 routing {
   request {
+    qname(geosite:google@cn) -> googledns
     qname(geosite:gfw) -> googledns
     qname(geosite:netflix) -> googledns
     fallback: alidns
