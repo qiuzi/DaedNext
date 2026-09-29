@@ -95,8 +95,9 @@ dip(geoip:private) -> must_direct
 dip(geoip:telegram, geoip:google, geoip:facebook, geoip:twitter, geoip:tor) -> ${DEFAULT_GROUP_NAME}
 domain(suffix: sb) -> ${DEFAULT_GROUP_NAME}
 domain(geosite:category-ai-chat-!cn) -> ${DEFAULT_GROUP_NAME}
+domain(geosite:google) -> ${DEFAULT_GROUP_NAME}
 domain(geosite:netflix) -> ${DEFAULT_GROUP_NAME}
-domain(geoip:netflix) -> ${DEFAULT_GROUP_NAME}
+dip(geoip:netflix) -> ${DEFAULT_GROUP_NAME}
 dip(geoip:cn) -> must_direct
 domain(geosite:cn) -> must_direct
 domain(geosite:gfw) -> ${DEFAULT_GROUP_NAME}
