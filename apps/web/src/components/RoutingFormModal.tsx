@@ -148,9 +148,7 @@ dip(geoip:telegram, geoip:google, geoip:facebook, geoip:twitter, geoip:tor) -> $
 domain(geosite:netflix) -> ${proxyGroupName}
 domain(geosite:google@cn) -> ${proxyGroupName}
 domain(geosite:category-ai-chat-!cn) -> ${proxyGroupName}
-domain(suffix: muse.ai) -> ${proxyGroupName}
 domain(geosite:gfw) -> ${proxyGroupName}
-dip(8.8.8.8) -> ${proxyGroupName}
 fallback: must_direct`
     case 'nonCn':
       return `${header}${macRule}
