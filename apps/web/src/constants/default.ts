@@ -98,8 +98,6 @@ domain(geosite:category-ai-chat-!cn) -> ${DEFAULT_GROUP_NAME}
 domain(geosite:google) -> ${DEFAULT_GROUP_NAME}
 domain(geosite:netflix) -> ${DEFAULT_GROUP_NAME}
 dip(geoip:netflix) -> ${DEFAULT_GROUP_NAME}
-dip(geoip:cn) -> must_direct
-domain(geosite:cn) -> must_direct
 domain(geosite:gfw) -> ${DEFAULT_GROUP_NAME}
 dip(8.8.8.8) -> ${DEFAULT_GROUP_NAME}
 fallback: must_direct
