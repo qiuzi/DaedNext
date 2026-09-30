@@ -92,7 +92,7 @@ export const DEFAULT_ROUTING = `
 pname(NetworkManager, systemd-resolved, netclient) -> must_direct
 dport(53) && pname(dnsmasq) -> direct
 dip(geoip:private) -> must_direct
-dip(geoip:telegram, geoip:google, geoip:facebook, geoip:twitter, geoip:tor) -> ${DEFAULT_GROUP_NAME}
+dip(geoip:telegram, geoip:google, geoip:meta, geoip:tor) -> ${DEFAULT_GROUP_NAME}
 domain(suffix: sb) -> ${DEFAULT_GROUP_NAME}
 domain(geosite:category-ai-chat-!cn) -> ${DEFAULT_GROUP_NAME}
 domain(geosite:google) -> ${DEFAULT_GROUP_NAME}
