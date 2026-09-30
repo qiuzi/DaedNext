@@ -144,7 +144,7 @@ function buildRoutingTemplate(
   switch (mode) {
     case 'gfw':
       return `${header}${macRule}
-dip(geoip:telegram, geoip:google, geoip:facebook, geoip:twitter, geoip:tor) -> ${proxyGroupName}
+dip(geoip:telegram, geoip:google, geoip:meta, geoip:tor) -> ${proxyGroupName}
 domain(geosite:netflix) -> ${proxyGroupName}
 domain(geosite:google@cn) -> ${proxyGroupName}
 domain(geosite:category-ai-chat-!cn) -> ${proxyGroupName}
